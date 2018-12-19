@@ -8,9 +8,9 @@ import pymongo, json
 import OPi.GPIO as GPIO
 from pyA20.gpio import gpio
 from pyA20.gpio import port
-sys.path.append('/root/DHT22-Python-library-Orange-PI')
 import dht22
 
+# sys.path.append('/root/DHT22-Python-library-Orange-PI')
 # init pins
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(5, GPIO.OUT)
