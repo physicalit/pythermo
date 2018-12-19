@@ -1,27 +1,30 @@
 #!/usr/bin/python3
 
-from pyA20.gpio import gpio
 from multiprocessing import Process
-from pyA20.gpio import port
+import datetime, calendar
 import time, sys
 import http.client
-import OPi.GPIO as GPIO
 import pymongo, json
+import OPi.GPIO as GPIO
+from pyA20.gpio import gpio
+from pyA20.gpio import port
 sys.path.append('/root/DHT22-Python-library-Orange-PI')
 import dht22
-import datetime, calendar
 
-# init
+# init pins
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(5, GPIO.OUT)
 GPIO.output(5, 0)
 PIN2 = port.PA12
 
+# load config file
 with open("config.json", "r") as f:
     config = json.load(f)["config"]
 
 locals().update(config)
 
+
+# define functions
 def writeToMongo(coll, data):
     client = pymongo.MongoClient()
     client = pymongo.MongoClient(mon_host, username=mon_user, password=mon_pass)
@@ -39,11 +42,12 @@ def getSenzorMain(gpio):
         if result.is_valid():
             timest = calendar.timegm(datetime.datetime.now().timetuple())
             try:
-                writeToMongo("senzor1", {"temp": result.temperature, "humidity": result.humidity, "timestamp": timest})
+                writeToMongo("senzor1", {"temp": result.temperature,
+                                         "humidity": result.humidity,
+                                         "timestamp": timest})
             except:
                 continue
             time.sleep(60)
-
 
 def outTemp():
     print('func2: starting')
@@ -63,6 +67,7 @@ def outTemp():
             continue
         time.sleep(60)
 
+# execute the script
 if __name__ == '__main__':
     p1 = Process(target=getSenzorMain, args=(gpio,))
     p2 = Process(target=outTemp)

@@ -6,6 +6,9 @@
   "config"   : {
                 "mon_host" : "",
                 "mon_pass": "",
-                "mon_user": ""
+                "mon_user": "",
+                "x-api-key": "",
+                "cache-control": "no-cache",
+                "req_param": "/data/2.5/weather?q=Bucharest&units=metric"
                 }
   }
