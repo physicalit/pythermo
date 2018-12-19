@@ -28,7 +28,6 @@ def writeToMongo(coll, data):
     db = client['termostat']
     collection = getattr(db, coll)
     post_id = collection.insert_one(data).inserted_id
-    post_id
     db.collection_names(include_system_collections=False)
 
 def getSenzorMain(gpio):
