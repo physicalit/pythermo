@@ -52,11 +52,10 @@ def outTemp():
         try:
             conn = http.client.HTTPConnection("api.openweathermap.org")
             headers = {
-                'x-api-key': "5354ce02471f271dfe733ff8c524bffe",
+                'x-api-key': x-api-key,
                 'cache-control': "no-cache",
-                'postman-token': "65db4602-6cdc-eded-62c1-7c372ee02971"
                 }
-            conn.request("GET", "/data/2.5/weather?q=Dobroesti&units=metric", headers=headers)
+            conn.request("GET", req_param, headers=headers)
             res = conn.getresponse()
             result = json.load(res)["main"]
             result["timestamp"] = calendar.timegm(datetime.datetime.now().timetuple())
