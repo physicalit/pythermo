@@ -3,6 +3,7 @@
   "version"  : "0.0.1",
   "author"   : "Mihuleac Sergiu",
   "license"  : "MIT",
+  "apt req"      : "sudo apt-get install python3-dev gcc-arm*",
   "config"   : {
                 "mon_host" : "",
                 "mon_pass": "",

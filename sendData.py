@@ -13,7 +13,10 @@ import dht22
 # sys.path.append('/root/DHT22-Python-library-Orange-PI')
 # init pins
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(5, GPIO.OUT)
+try:
+    GPIO.setup(5, GPIO.OUT)
+except GPIO.RuntimeError:
+    pass
 GPIO.output(5, 0)
 PIN2 = port.PA12
 
@@ -26,7 +29,7 @@ locals().update(config)
 
 # define functions
 def writeToMongo(coll, data):
-    client = pymongo.MongoClient()
+    # client = pymongo.MongoClient()
     client = pymongo.MongoClient(mon_host, username=mon_user, password=mon_pass)
     db = client['termostat']
     collection = getattr(db, coll)
