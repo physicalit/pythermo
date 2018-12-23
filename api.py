@@ -5,6 +5,8 @@ from flask_restful import Resource, Api, reqparse
 
 import pymongo, json
 from datetime import datetime
+sys.path.append('/root/pythermo/')
+os.chdir("/root/pythermo/")
 from sendData import startHeat
 
 
