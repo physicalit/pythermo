@@ -5,6 +5,8 @@ from flask_restful import Resource, Api, reqparse
 
 import pymongo, json
 from datetime import datetime
+from sendData import startHeat
+
 
 with open("config.json", "r") as f:
     api = json.load(f)["api"]
@@ -43,32 +45,49 @@ class Status(Resource):
                 l.pop('_id')
             return result, 200
         else:
-            return {'resutl': 'Not authorized'}, 401
+            return {'result': 'Not authorized'}, 401
 
 class All_Senz(Resource):
-    def get(self, senz):
+    def get(self):
         parser = reqparse.RequestParser()
+        parser.add_argument('senzor_name', type=str)
+        parser.add_argument('limit', type=int)
+        param = parser.parse_args()
         if request.headers.get('Authorization') == token:
             result = []
-            mycol = db[senz]
+            try:
+                mycol = db[param["senzor_name"]]
+            except:
+                return {'result': 'No such senzor, or not specified'}, 404
             for entry in mycol.find():
                 entry.pop('_id')
                 entry["timestamp"] = datetime.utcfromtimestamp(entry["timestamp"]).strftime('%Y-%m-%d %H:%M:%S')
                 result.append(entry)
-            return result, 200
+            if param["limit"]:
+                return result[-param["limit"]:], 200
+            else:
+                return result, 200
         else:
-            return {'resutl': 'Not authorized'}, 401
+            return {'result': 'Not authorized'}, 401
 
-# class Employees_Name(Resource):
-#     def get(self, employee_id):
-#         conn = db_connect.connect()
-#         query = conn.execute("select * from employees where EmployeeId =%d "  %int(employee_id))
-#         result = {'data': [dict(zip(tuple (query.keys()) ,i)) for i in query.cursor]}
-#         return jsonify(result)
+class Start(Resource):
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('time', type=int)
+        param = parser.parse_args()
+        if request.headers.get('Authorization') == token:
+            if param["time"]:
+                startHeat(run_time=param["time"])
+                return {'result': 'Heater started for {} seconds'.format(param["time"])}
+            else:
+                startHeat()
+                return {'result': 'Heater started'}
+        else:
+            return {'result': 'Not authorized'}, 401
 
-
-api.add_resource(Status, '/status') # Route_1
-api.add_resource(All_Senz, '/status/<senz>') # Route_3
+api.add_resource(Status, '/status')
+api.add_resource(All_Senz, '/stats', endpoint='stats')
+api.add_resource(Start, '/start', endpoint='start')
 
 
 if __name__ == '__main__':

@@ -65,21 +65,26 @@ def getSenzorMain(gpio):
 def outTemp():
     # print('func2: starting')
     while True:
-        # try:
-        conn = http.client.HTTPConnection("api.openweathermap.org")
-        headers = {
-            'x-api-key': api_key,
-            'cache-control': "no-cache",
-            }
-        conn.request("GET", req_param, headers=headers)
-        res = conn.getresponse()
-        result = json.load(res)["main"]
-        result["timestamp"] = calendar.timegm(datetime.datetime.now().timetuple())
-        writeToMongo("senzor_out", result)
-        print(result)
-        # except:
-        #     continue
+        try:
+            conn = http.client.HTTPConnection("api.openweathermap.org")
+            headers = {
+                'x-api-key': api_key,
+                'cache-control': "no-cache",
+                }
+            conn.request("GET", req_param, headers=headers)
+            res = conn.getresponse()
+            result = json.load(res)["main"]
+            result["timestamp"] = calendar.timegm(datetime.datetime.now().timetuple())
+            writeToMongo("senzor_out", result)
+            print(result)
+        except:
+            continue
         time.sleep(60)
+
+def startHeat(run_time=300):
+    GPIO.output(5, 1)
+    time.sleep(run_time)
+    GPIO.output(5, 0)
 
 # execute the script
 if __name__ == '__main__':

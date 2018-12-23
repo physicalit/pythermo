@@ -10,5 +10,14 @@ Similar poject: [smart-thermostat](https://github.com/szlaci83/smart-thermostat)
 * OPi.GPIO
 * falcon
 
+### usage
+```
+nohup python3 /path_to_repo/pythermo/api.py > api.log &
+nohup python3 /path_to_repo/pythermo/sendData.py > main.log &
+```
+
 ### To do
-* authentication for API
+* authentication middleware for API
+* make it dry
+* multiple senzors management
+* installer
