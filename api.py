@@ -84,10 +84,29 @@ class Start(Resource):
                 return {'result': 'Heater started'}
         else:
             return {'result': 'Not authorized'}, 401
+class SetTemp(Resource):
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('temperature', type=int)
+        param = parser.parse_args()
+        if request.headers.get('Authorization') == token:
+            if param["temperature"]:
+                mycol = db["config"]
+                for entry in mycol.find():
+                    obj = entry
+                mycol.update(obj, {"$set": {'temp': param["temperature"]}}, upsert=False)
+                for entry in mycol.find():
+                    entry.pop('_id')
+                    return entry
+            else:
+                return {'result': 'No temperature specified'}, 404
+        else:
+            return {'result': 'Not authorized'}, 401
 
 api.add_resource(Status, '/status')
 api.add_resource(All_Senz, '/stats', endpoint='stats')
 api.add_resource(Start, '/start', endpoint='start')
+api.add_resource(SetTemp, '/temp', endpoint='temp')
 
 
 if __name__ == '__main__':

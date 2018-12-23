@@ -31,6 +31,8 @@ def is_connected():
             host = socket.gethostbyname("www.google.com")
             s = socket.create_connection((host, 80), 2)
             time.sleep(30)
+        except KeyboardInterrupt:
+            pass
         except:
             subprocess.run(["reboot"])
 
@@ -81,6 +83,43 @@ def outTemp():
             continue
         time.sleep(60)
 
+def termoStat():
+    client = pymongo.MongoClient(host=mon_host, port=mon_port, username=mon_user,
+    password=mon_pass, authSource=mon_authSource)
+    db = client['termostat']
+    while True:
+        mycol = db["config"]
+        for entry in mycol.find():
+            conf_temp = entry['temp']
+        mycol = db["senzor1"]
+        for senz_temp in mycol.find():
+            senz_temp = senz_temp["temp"]
+        mycol = db["senzor_out"]
+        for out_temp in mycol.find():
+            out_temp = out_temp["temp"]
+        if out_temp > 5:
+            if conf_temp - senz_temp >= 1:
+                GPIO.output(5, 1)
+            time.sleep(180)
+            GPIO.output(5, 0)
+        elif out_temp > 0:
+            if conf_temp - senz_temp >= 0.5:
+                GPIO.output(5, 1)
+            time.sleep(340)
+            GPIO.output(5, 0)
+        elif out_temp > -5:
+            if conf_temp - senz_temp >= 0.5:
+                GPIO.output(5, 1)
+            time.sleep(300)
+            GPIO.output(5, 0)
+        elif out_temp < -5:
+            if conf_temp - senz_temp >= 0.5:
+                GPIO.output(5, 1)
+            time.sleep(540)
+            GPIO.output(5, 0)
+        time.sleep(5)
+
+
 def startHeat(run_time=300):
     GPIO.output(5, 1)
     time.sleep(run_time)
@@ -91,9 +130,11 @@ if __name__ == '__main__':
     p1 = Process(target=getSenzorMain, args=(gpio,))
     p2 = Process(target=outTemp)
     p3 = Process(target=is_connected)
+    p4 = Process(target=termoStat)
     p1.start()
     p2.start()
     p3.start()
+    p4.start()
 
 
 # print("Last valid input: " + str(datetime.datetime.utcfromtimestamp(timest).strftime('%Y-%m-%d %H:%M:%S')))

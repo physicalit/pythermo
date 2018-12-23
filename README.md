@@ -21,3 +21,7 @@ nohup python3 /path_to_repo/pythermo/sendData.py > main.log &
 * make it dry
 * multiple senzors management
 * installer
+* make a option of not needing internet connexions
+* history of heater on and off
+* check if opi zero is running from other server
+* aware on time based on history
