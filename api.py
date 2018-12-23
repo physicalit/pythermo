@@ -3,7 +3,7 @@
 from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
 
-import pymongo, json
+import pymongo, json, sys, os
 from datetime import datetime
 sys.path.append('/root/pythermo/')
 os.chdir("/root/pythermo/")
