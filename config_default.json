@@ -6,9 +6,11 @@
   "apt req"      : "sudo apt-get install python3-dev gcc-arm*",
   "config"   : {
                 "mon_host" : "",
+                "mon_port" : "",
+                "mon_authSource" : "termostat",
                 "mon_pass": "",
                 "mon_user": "",
-                "x-api-key": "",
+                "api_key": "",
                 "cache-control": "no-cache",
                 "req_param": "/data/2.5/weather?q=Bucharest&units=metric"
                 }

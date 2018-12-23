@@ -8,3 +8,7 @@ Similar poject: [smart-thermostat](https://github.com/szlaci83/smart-thermostat)
 * pymongo
 * https://github.com/wdmomoxx/orangepi_ZERO_gpio_pyH2.git
 * OPi.GPIO
+* falcon
+
+### To do
+* authentication for API
