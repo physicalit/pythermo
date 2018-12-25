@@ -81,7 +81,7 @@ def outTemp():
             result = json.loads(response.text)["main"]
             result["timestamp"] = calendar.timegm(datetime.datetime.now().timetuple())
             writeToMongo("senzor_out", result)
-            print(result)d
+            print(result)
         except:
             continue
         time.sleep(60)
