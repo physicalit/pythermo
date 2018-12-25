@@ -8,12 +8,20 @@ Similar poject: [smart-thermostat](https://github.com/szlaci83/smart-thermostat)
 * pymongo
 * https://github.com/wdmomoxx/orangepi_ZERO_gpio_pyH2.git
 * OPi.GPIO
-* falcon
+* flask
+* flask_restful
 
 ### usage
 ```
 nohup python3 /path_to_repo/pythermo/api.py > api.log &
 nohup python3 /path_to_repo/pythermo/sendData.py > main.log &
+```
+
+```
+@reboot sleep 30 && nohup python3 /root/pythermo/api.py > /root/api.log &
+@reboot sleep 30 && nohup python3 /root/pythermo/sendData.py > /root/snddata.log &
+@reboot sleep 30 && python3 /root/pythermo/termo.py >> /root/termo.log 2>&1 &
+
 ```
 
 ### To do

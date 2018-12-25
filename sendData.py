@@ -77,7 +77,10 @@ def outTemp():
                 }
             conn.request("GET", req_param, headers=headers)
             res = conn.getresponse()
-            result = json.load(res)["main"]
+            try:
+                result = json.load(res)["main"]
+            except TypeError:
+                result = json.load(res.decode('utf-8'))["main"]
             result["timestamp"] = calendar.timegm(datetime.datetime.now().timetuple())
             writeToMongo("senzor_out", result)
             print(result)
