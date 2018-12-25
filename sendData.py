@@ -19,6 +19,8 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 GPIO.setup(5, GPIO.OUT)
 GPIO.output(5, 0)
+GPIO.setup(10, GPIO.OUT)
+GPIO.output(10, 0)
 PIN2 = port.PA12
 
 # load config file
