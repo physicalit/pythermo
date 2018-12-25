@@ -19,15 +19,19 @@ def termoStat():
     password=mon_pass, authSource=mon_authSource)
     db = client['termostat']
     while True:
-        mycol = db["config"]
-        for entry in mycol.find():
-            conf_temp = entry['temp']
-        mycol = db["senzor1"]
-        for senz_temp in mycol.find():
-            senz_temp = senz_temp["temp"]
-        mycol = db["senzor_out"]
-        for out_temp in mycol.find():
-            out_temp = out_temp["temp"]
+        try:
+            mycol = db["config"]
+            for entry in mycol.find(): # try except
+                conf_temp = entry['temp']
+            mycol = db["senzor1"]
+            for senz_temp in mycol.find():
+                senz_temp = senz_temp["temp"]
+            mycol = db["senzor_out"]
+            for out_temp in mycol.find():
+                out_temp = out_temp["temp"]
+        except:
+            time.sleep(10)
+            continue
         if out_temp > 5:
             if conf_temp - senz_temp >= 1:
                 GPIO.output(5, 1)
