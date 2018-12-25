@@ -4,6 +4,7 @@ from multiprocessing import Process
 import datetime, calendar, socket
 import time, sys, subprocess, os
 import http.client
+import requests
 import pymongo, json
 sys.path.append('/root/pythermo/')
 os.chdir("/root/pythermo/")
@@ -70,20 +71,17 @@ def outTemp():
     # print('func2: starting')
     while True:
         try:
-            conn = http.client.HTTPConnection("api.openweathermap.org")
+            url = "http://api.openweathermap.org/data/2.5/weather"
+            payload = ""
             headers = {
                 'x-api-key': api_key,
                 'cache-control': "no-cache",
                 }
-            conn.request("GET", req_param, headers=headers)
-            res = conn.getresponse()
-            try:
-                result = json.load(res)["main"]
-            except TypeError:
-                result = json.load(res.decode('utf-8'))["main"]
+            response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
+            result = json.loads(response.text)["main"]
             result["timestamp"] = calendar.timegm(datetime.datetime.now().timetuple())
             writeToMongo("senzor_out", result)
-            print(result)
+            print(result)d
         except:
             continue
         time.sleep(60)

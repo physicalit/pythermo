@@ -10,6 +10,7 @@ Similar poject: [smart-thermostat](https://github.com/szlaci83/smart-thermostat)
 * OPi.GPIO
 * flask
 * flask_restful
+* requests
 
 ### usage
 ```
