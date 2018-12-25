@@ -63,7 +63,10 @@ class All_Senz(Resource):
                 return {'result': 'No such senzor, or not specified'}, 404
             for entry in mycol.find():
                 entry.pop('_id')
-                entry["timestamp"] = datetime.utcfromtimestamp(entry["timestamp"]).strftime('%Y-%m-%d %H:%M:%S')
+                try:
+                    entry["timestamp"] = datetime.utcfromtimestamp(entry["timestamp"]).strftime('%Y-%m-%d %H:%M:%S')
+                except KeyError:
+                    continue
                 result.append(entry)
             if param["limit"]:
                 return result[-param["limit"]:], 200
