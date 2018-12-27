@@ -27,11 +27,11 @@ def termoStat():
             for senz_temp in mycol.find():
                 senz_temp = senz_temp["temp"]
             mycol = db["senzor_out"]
-                for out_temp in mycol.find():
-                    try:
-                        out_temp = out_temp["temp"]
-                    except:
-                        pass
+            for out_temp in mycol.find():
+                try:
+                    out_temp = out_temp["temp"]
+                except:
+                    pass
         except:
             time.sleep(10)
             continue

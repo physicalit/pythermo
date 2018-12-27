@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+from multiprocessing import Process
 from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
 
@@ -82,27 +82,38 @@ class Start(Resource):
         param = parser.parse_args()
         if request.headers.get('Authorization') == token:
             if param["time"]:
-                startHeat(run_time=param["time"])
+                p1 = Process(target=startHeat, args=(param["time"],))
                 return {'result': 'Heater started for {} seconds'.format(param["time"])}
             else:
-                startHeat()
+                p1 = Process(target=startHeat, args=(300,))
                 return {'result': 'Heater started'}
+            p1.start()
         else:
             return {'result': 'Not authorized'}, 401
 class SetTemp(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('temperature', type=int)
+        parser.add_argument('loc', type=int)
         param = parser.parse_args()
         if request.headers.get('Authorization') == token:
             if param["temperature"]:
-                mycol = db["config"]
-                for entry in mycol.find():
-                    obj = entry
-                mycol.update(obj, {"$set": {'temp': param["temperature"]}}, upsert=False)
-                for entry in mycol.find():
-                    entry.pop('_id')
-                    return entry
+                if param["loc"] == 0:
+                    mycol = db["config"]
+                    for entry in mycol.find():
+                        obj = entry
+                    mycol.update(obj, {"$set": {'temp': param["temperature"]}}, upsert=False)
+                    for entry in mycol.find():
+                        entry.pop('_id')
+                        return entry
+                if param["loc"] == 1:
+                    mycol = db["config2"]
+                    for entry in mycol.find():
+                        obj = entry
+                    mycol.update(obj, {"$set": {'temp': param["temperature"]}}, upsert=False)
+                    for entry in mycol.find():
+                        entry.pop('_id')
+                        return entry
             else:
                 return {'result': 'No temperature specified'}, 404
         else:

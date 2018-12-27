@@ -88,7 +88,7 @@ def outTemp():
             continue
         time.sleep(60)
 
-def startHeat(run_time=300):
+def startHeat(run_time):
     GPIO.output(5, 1)
     time.sleep(run_time)
     GPIO.output(5, 0)
