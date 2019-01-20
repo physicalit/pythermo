@@ -24,7 +24,7 @@ nohup python3 /path_to_repo/pythermo/sendData.py > main.log &
 @reboot sleep 30 && python3 /root/pythermo/termo.py >> /root/termo.log 2>&1 &
 
 ```
-
+https://cloud.mongodb.com/freemonitoring/cluster/4KLAVF5RAD6OS4HZ4CZJ6JCTVNTHIMI7
 ### To do
 * authentication middleware for API
 * make it dry

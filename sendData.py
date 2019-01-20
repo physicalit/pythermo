@@ -3,7 +3,6 @@
 from multiprocessing import Process
 import datetime, calendar, socket
 import time, sys, subprocess, os
-import http.client
 import requests
 import pymongo, json
 sys.path.append('/root/pythermo/')
