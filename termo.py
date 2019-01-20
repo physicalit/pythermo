@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import pymongo, sys, os, json, time
+import datetime
 import OPi.GPIO as GPIO
 sys.path.append('/root/pythermo/')
 os.chdir("/root/pythermo/")
@@ -35,6 +36,9 @@ def termoStat():
         except:
             time.sleep(10)
             continue
+        now = int(datetime.datetime.now().strftime('%H'))
+        if now > 10 and now < 18:
+            conf_temp = conf_temp - 1
         if out_temp > 5:
             if conf_temp - senz_temp >= 1:
                 GPIO.output(5, 1)
